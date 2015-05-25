@@ -1,0 +1,13 @@
+@(style: String, beers: Seq[Beer])
+
+@main("List of beers") {
+
+<h1>@style</h1>
+
+<ul>
+    @beers.map { beer =>
+    <li>@beer</li>
+    }
+</ul>
+
+}

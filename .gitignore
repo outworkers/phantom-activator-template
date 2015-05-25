@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 *.class
 *.log
 
@@ -15,3 +16,22 @@ project/plugins/project/
 # Scala-IDE specific
 .scala_dependencies
 .worksheet
+=======
+logs
+project/project
+project/target
+target
+tmp
+.history
+dist
+/.idea
+/*.iml
+/*.jar
+/activator
+/out
+/.idea_modules
+/.classpath
+/.project
+/RUNNING_PID
+/.settings
+>>>>>>> 632b712... Initial commit
