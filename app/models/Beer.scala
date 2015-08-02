@@ -5,25 +5,35 @@ import com.websudos.phantom.dsl._
 
 import scala.concurrent.Future
 
+
+trait Connector {
+  implicit def space: KeySpace
+
+  implicit def session: Session
+}
+
+
 case class Beer(company: String, name: String, style: String)
 
-class Beers extends CassandraTable[Beers, Beer] {
+class Beers extends CassandraTable[ConcreteBeers, Beer] {
   object company extends StringColumn(this) with PartitionKey[String]
   object name extends StringColumn(this) with PartitionKey[String]
   object style extends StringColumn(this) with Index[String]
 
   def fromRow(row: Row): Beer = {
-    Beer(company(row), name(row), style(row))
+    Beer(
+      company = company(row),
+      name = name(row),
+      style = style(row)
+    )
   }
 
 }
 
-object Beers extends Beers with SimpleCassandraConnector {
-
-  override implicit def keySpace: KeySpace = KeySpace("beers")
+abstract class ConcreteBeers extends Beers with Connector {
 
   def getByStyle(style: String): Future[List[Beer]] = {
-    Beers.select.where(_.style eqs style).fetch()
+    select.where(_.style eqs style).fetch()
   }
   
 }
