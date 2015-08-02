@@ -5,14 +5,6 @@ import com.websudos.phantom.dsl._
 
 import scala.concurrent.Future
 
-
-trait Connector {
-  implicit def space: KeySpace
-
-  implicit def session: Session
-}
-
-
 case class Beer(company: String, name: String, style: String)
 
 class Beers extends CassandraTable[ConcreteBeers, Beer] {
