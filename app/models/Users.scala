@@ -12,8 +12,6 @@ case class User(
   passwordHash: String,
   salt: String,
   registration: DateTime
-
-
 )
 
 abstract class Users extends CassandraTable[ConcreteUsers, User] {
