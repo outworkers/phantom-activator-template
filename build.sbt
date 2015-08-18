@@ -4,17 +4,18 @@ version := "1.0-SNAPSHOT"
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
-scalaVersion := "2.11.6"
+scalaVersion := "2.11.7"
 
-val phantomVersion = "1.8.12"
+val PhantomVersion = "1.11.0"
 
 libraryDependencies ++= Seq(
   jdbc,
   anorm,
   cache,
   ws,
-  "com.websudos"  %% "phantom-dsl"                   % phantomVersion,
-  "com.websudos"  %% "phantom-testkit"               % phantomVersion
+  "com.websudos"  %% "phantom-dsl"                   % PhantomVersion,
+  "com.websudos"  %% "phantom-testkit"               % PhantomVersion,
+  "com.websudos"  %% "util-parsers"                  % "0.9.11"
 )
 
 resolvers ++= Seq(
@@ -26,6 +27,5 @@ resolvers ++= Seq(
   "Sonatype staging"                 at "http://oss.sonatype.org/content/repositories/staging",
   "Java.net Maven2 Repository"       at "http://download.java.net/maven/2/",
   "Twitter Repository"               at "http://maven.twttr.com",
-  "Websudos releases"                at "http://maven.websudos.co.uk/ext-release-local",
   "Websudos"                         at "https://dl.bintray.com/websudos/oss-releases/"
 )

@@ -1,7 +1,8 @@
 package controllers
 
-import models.Beers
+import models.AppDatabase
 import play.api.mvc._
+
 import scala.concurrent.ExecutionContext.Implicits.global
 
 object Application extends Controller {
@@ -11,7 +12,7 @@ object Application extends Controller {
   }
 
   def beers(style: String) = Action.async {
-    Beers.getByStyle(style).map { beers =>
+    AppDatabase.beers.getByStyle(style).map { beers =>
       Ok(views.html.beers(style, beers))
     }
   }
