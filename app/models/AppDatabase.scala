@@ -14,7 +14,7 @@ object Defaults {
 }
 
 
-class AppDatabase(keyspace: KeySpaceDef) extends Database(keyspace) {
+class AppDatabase(val keyspace: KeySpaceDef) extends Database(keyspace) {
 
   object users extends ConcreteUsers with keyspace.Connector
   object beers extends ConcreteBeers with keyspace.Connector
