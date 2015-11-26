@@ -22,7 +22,7 @@ class Beers extends CassandraTable[ConcreteBeers, Beer] {
 
 }
 
-abstract class ConcreteBeers extends Beers with Connector {
+abstract class ConcreteBeers extends Beers with RootConnector {
 
   def getByStyle(style: String): Future[List[Beer]] = {
     select.where(_.style eqs style).fetch()

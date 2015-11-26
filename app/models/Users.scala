@@ -34,7 +34,7 @@ abstract class Users extends CassandraTable[ConcreteUsers, User] {
   }
 }
 
-abstract class ConcreteUsers extends Users with Connector {
+abstract class ConcreteUsers extends Users with RootConnector {
 
   def store(user: User): Future[ResultSet] = {
     insert.value(_.id, user.id)
