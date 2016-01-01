@@ -1,21 +1,19 @@
 name := """play-phantom"""
 
-version := "1.0-SNAPSHOT"
+version := "1.1.0"
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 scalaVersion := "2.11.7"
 
-val PhantomVersion = "1.11.0"
+val PhantomVersion = "1.18.1"
 
 libraryDependencies ++= Seq(
-  jdbc,
   anorm,
   cache,
   ws,
   "com.websudos"  %% "phantom-dsl"                   % PhantomVersion,
-  "com.websudos"  %% "phantom-testkit"               % PhantomVersion,
-  "com.websudos"  %% "util-parsers"                  % "0.9.11"
+  "com.websudos"  %% "util-parsers"                  % "0.10.5"
 )
 
 resolvers ++= Seq(
