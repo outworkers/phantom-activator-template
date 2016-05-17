@@ -1,6 +1,5 @@
 package models
 
-import com.websudos.phantom.connectors.{ContactPoint, KeySpaceDef}
 import com.websudos.phantom.dsl._
 
 trait Connector {
@@ -20,5 +19,12 @@ class AppDatabase(val keyspace: KeySpaceDef) extends Database(keyspace) {
   object beers extends ConcreteBeers with keyspace.Connector
 }
 
-
 object AppDatabase extends AppDatabase(Defaults.Connector)
+
+trait DatabaseProvider {
+  def database: Database
+}
+
+trait AppDatabaseProvider extends DatabaseProvider {
+  override val database: AppDatabase = AppDatabase
+}

@@ -1,18 +1,18 @@
 package controllers
 
-import models.AppDatabase
+import models.AppDatabaseProvider
 import play.api.mvc._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-object Application extends Controller {
+object Application extends Controller with AppDatabaseProvider {
 
   def index = Action {
     Ok(views.html.index("Your new application is ready."))
   }
 
   def beers(style: String) = Action.async {
-    AppDatabase.beers.getByStyle(style).map { beers =>
+    database.beers.getByStyle(style).map { beers =>
       Ok(views.html.beers(style, beers))
     }
   }
