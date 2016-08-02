@@ -1,4 +1,19 @@
-resolvers += "Typesafe repository" at "https://repo.typesafe.com/typesafe/releases/"
+def outworkersPattern: Patterns = {
+  val pList = List(
+    "[organisation]/[module](_[scalaVersion])(_[sbtVersion])/[revision]/[artifact]-[revision](-[classifier]).[ext]"
+  )
+
+  Patterns(
+    pList,
+    pList,
+    isMavenCompatible = true
+  )
+}
+
+resolvers ++= Seq(
+  Resolver.typesafeRepo("releases"),
+  Resolver.url("Maven Ivy Outworkers", url(Resolver.DefaultMavenRepositoryRoot))(outworkersPattern)
+)
 
 // The Play plugin
 addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.3.9")
