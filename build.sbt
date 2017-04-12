@@ -21,5 +21,6 @@ libraryDependencies ++= Seq(
   cache,
   ws,
   "com.outworkers"  %% "phantom-dsl" % Versions.phantom,
-  "com.outworkers"  %% "util-parsers-cats" % Versions.util
+  "com.outworkers"  %% "util-parsers-cats" % Versions.util,
+  "com.outworkers"  %% "util-samplers" % Versions.util % Test
 )
