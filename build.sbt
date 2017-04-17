@@ -25,7 +25,6 @@ libraryDependencies ++= Seq(
   cache,
   ws,
   specs2 % Test,
-  "org.specs2" %% "specs2-core" % "3.8.5" % Test, // due to conflict with Scalaz
   "com.outworkers"  %% "phantom-dsl" % Versions.phantom,
   "com.outworkers"  %% "util-parsers-cats" % Versions.util,
   "com.outworkers"  %% "util-samplers" % Versions.util % Test
