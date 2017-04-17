@@ -1,9 +1,7 @@
 package models
 
 import com.outworkers.phantom.dsl._
-
 import scala.concurrent.Future
-
 
 case class User(
   id: UUID,
@@ -14,17 +12,13 @@ case class User(
   registration: DateTime
 )
 
-abstract class Users extends CassandraTable[ConcreteUsers, User] {
+abstract class Users extends CassandraTable[Users, User] with RootConnector {
   object id extends UUIDColumn(this) with PartitionKey
   object email extends StringColumn(this)
   object name extends StringColumn(this)
   object passwordHash extends StringColumn(this)
   object salt extends StringColumn(this)
   object registration extends DateTimeColumn(this)
-
-}
-
-abstract class ConcreteUsers extends Users with RootConnector {
 
   def save(user: User): Future[ResultSet] = {
     store(user).future()
