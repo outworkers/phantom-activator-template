@@ -20,6 +20,9 @@ abstract class Users extends CassandraTable[Users, User] with RootConnector {
   object salt extends StringColumn(this)
   object registration extends DateTimeColumn(this)
 
+  def save(user: User): Future[ResultSet] = {
+    store(user).future()
+  }
 
   def getById(id: UUID): Future[Option[User]] = {
     select.where(_.id eqs id).one()
