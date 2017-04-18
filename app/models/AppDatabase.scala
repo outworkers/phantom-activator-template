@@ -6,14 +6,15 @@ import com.outworkers.phantom.dsl._
 import scala.concurrent.duration._
 
 object Defaults {
-  val Connector = ContactPoint.local.keySpace("websudos")
+  val connector: CassandraConnection = ContactPoint.local.keySpace("outworkers")
 }
 
 class AppDatabase(val keyspace: CassandraConnection) extends Database[AppDatabase](keyspace) {
 
   object users extends Users with Connector {
     override def autocreate(space: KeySpace): CreateQuery.Default[Users, User] = {
-      create.ifNotExists()(space).`with`(default_time_to_live eqs 10)
+      create.ifNotExists()(space)
+        .option(default_time_to_live eqs 10)
         .and(gc_grace_seconds eqs 10.seconds)
         .and(read_repair_chance eqs 0.2)
     }
@@ -22,4 +23,4 @@ class AppDatabase(val keyspace: CassandraConnection) extends Database[AppDatabas
 }
 
 
-object AppDatabase extends AppDatabase(Defaults.Connector)
+object AppDatabase extends AppDatabase(Defaults.connector)
