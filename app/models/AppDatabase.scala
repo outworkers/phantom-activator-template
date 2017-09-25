@@ -1,26 +1,41 @@
 package models
 
+import javax.inject.{Inject, Singleton}
+
 import com.outworkers.phantom.builder.query.CreateQuery
-import com.outworkers.phantom.connectors.{ ContactPoint, CassandraConnection }
 import com.outworkers.phantom.dsl._
+
+import scala.concurrent.{Await, Future}
 import scala.concurrent.duration._
 
-object Defaults {
-  val connector: CassandraConnection = ContactPoint.local.keySpace("outworkers")
-}
+@Singleton
+class AppDatabase @Inject()(override val connector: CassandraConnection) extends Database[AppDatabase](connector) {
 
-class AppDatabase(val keyspace: CassandraConnection) extends Database[AppDatabase](keyspace) {
-
-  object users extends Users with Connector {
-    override def autocreate(space: KeySpace): CreateQuery.Default[Users, User] = {
+  object beers extends Beers with Connector {
+    override def autocreate(space: KeySpace): CreateQuery.Default[Beers, Beer] = {
       create.ifNotExists()(space)
         .option(default_time_to_live eqs 10)
         .and(gc_grace_seconds eqs 10.seconds)
         .and(read_repair_chance eqs 0.2)
     }
+
+    def save(beer: Beer): Future[ResultSet] = {
+      beers.insert
+        .value(_.company, beer.company)
+        .value(_.style, beer.style)
+        .value(_.name, beer.name)
+        .future()
+    }
+
+    def initialize(): Unit = {
+      Await.result(beers.create.future(), 5000 millis)
+      beers.save(Beer(company = "budhizer", style = "white", name = "Summer Bud"))
+      beers.save(Beer(company = "budhizer", style = "dark", name = "Winter Bud"))
+      beers.save(Beer(company = "budhizer", style = "wheat", name = "Spring Bud"))
+      beers.save(Beer(company = "budhizer", style = "pumpkin", name = "Fall Bud"))
+    }
   }
-  object beers extends Beers with Connector
+
+  // Uncomment this to create database and add rows
+  // beers.initialize()
 }
-
-
-object AppDatabase extends AppDatabase(Defaults.connector)

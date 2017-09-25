@@ -15,8 +15,11 @@ abstract class Beers extends CassandraTable[Beers, Beer] with RootConnector {
   object name extends StringColumn(this) with PartitionKey
   object style extends StringColumn(this) with Index
 
-  def getByStyle(style: String): Future[List[Beer]] = {
+  def getByStyle(style: String): Future[Seq[Beer]] = {
     select.where(_.style eqs style).fetch()
   }
 
+  def all(): Future[Seq[Beer]] = {
+    select.all.fetch()
+  }
 }

@@ -8,21 +8,19 @@ resolvers ++= Seq(
   Resolver.jcenterRepo
 )
 
-scalaVersion := "2.11.8"
-
-routesGenerator := InjectedRoutesGenerator
+scalaVersion := "2.12.3"
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 lazy val Versions = new {
-  val phantom = "2.7.0"
-  val util = "0.30.1"
+  val phantom = "2.13.4"
+  val util = "0.38.0"
 }
 
 libraryDependencies ++= Seq(
-  cache,
-  ws,
-  specs2 % Test,
+  guice,
+  "net.codingwell" %% "scala-guice" % "4.1.0",
+    specs2 % Test,
   "com.outworkers"  %% "phantom-dsl" % Versions.phantom,
   "com.outworkers"  %% "util-parsers-cats" % Versions.util,
   "com.outworkers"  %% "util-samplers" % Versions.util % Test

@@ -15,7 +15,7 @@ import scala.concurrent.Future
  * For more information, consult the wiki.
  */
 @RunWith(classOf[JUnitRunner])
-class ApplicationSpec extends Specification {
+class HomeControllerSpec extends Specification {
 
   "Application" should {
 

@@ -4,7 +4,7 @@ sudo: required
 dist: trusty
 
 scala:
-  - 2.11.8
+  - 2.12.3
 
 notifications:
   slack:
@@ -19,11 +19,6 @@ branches:
 
 jdk:
 - oraclejdk8
-
-addons:
-  apt:
-    packages:
-      - oracle-java8-installer
 
 before_install: unset SBT_OPTS JVM_OPTS
 
