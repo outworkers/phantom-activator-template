@@ -9,7 +9,7 @@ import scala.concurrent.{Await, Future}
 import scala.concurrent.duration._
 
 @Singleton
-class AppDatabase @Inject()(override val connector: CassandraConnection) extends Database[AppDatabase](connector) {
+class AppDatabase @Inject()(env: play.api.Environment, override val connector: CassandraConnection) extends Database[AppDatabase](connector) {
 
   object beers extends Beers with Connector {
     override def autocreate(space: KeySpace): CreateQuery.Default[Beers, Beer] = {
@@ -28,7 +28,7 @@ class AppDatabase @Inject()(override val connector: CassandraConnection) extends
     }
 
     def initialize(): Unit = {
-      Await.result(beers.create.future(), 5000 millis)
+      Await.result(beers.autocreate(space).future(), 5000 millis)
       beers.save(Beer(company = "budhizer", style = "white", name = "Summer Bud"))
       beers.save(Beer(company = "budhizer", style = "dark", name = "Winter Bud"))
       beers.save(Beer(company = "budhizer", style = "wheat", name = "Spring Bud"))
@@ -36,6 +36,11 @@ class AppDatabase @Inject()(override val connector: CassandraConnection) extends
     }
   }
 
-  // Uncomment this to create database and add rows
-  // beers.initialize()
+  // Create cassandra database schema and populate database in test mode only.
+  env.mode match {
+    case play.api.Mode.Test =>
+      beers.initialize()
+    case other@_ =>
+      // do nothing
+  }
 }

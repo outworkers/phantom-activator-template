@@ -1,4 +1,4 @@
-import javax.inject.{Provider, Singleton}
+import javax.inject.{Inject, Provider, Singleton}
 
 import com.google.inject.AbstractModule
 import com.outworkers.phantom.connectors.{CassandraConnection, ContactPoint}
@@ -13,6 +13,14 @@ class Module extends AbstractModule  with ScalaModule {
 }
 
 @Singleton
-class ConnectionProvider extends Provider[CassandraConnection] {
-  lazy val get: CassandraConnection = ContactPoint.local.keySpace("outworkers")
+class ConnectionProvider @Inject()(env: play.api.Environment) extends Provider[CassandraConnection] {
+  lazy val get: CassandraConnection = {
+    val builder = env.mode match {
+      case play.api.Mode.Test =>
+        ContactPoint.embedded
+      case other@_ =>
+        ContactPoint.local
+    }
+    builder.keySpace("outworkers")
+  }
 }
