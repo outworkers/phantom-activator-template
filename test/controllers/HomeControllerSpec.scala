@@ -2,6 +2,7 @@ package controllers
 
 import org.scalatest.{BeforeAndAfterAll, MustMatchers, WordSpec}
 import org.scalatestplus.play.guice.GuiceOneAppPerTest
+import org.slf4j.LoggerFactory
 import play.api.test.Helpers._
 import play.api.test._
 
@@ -10,9 +11,16 @@ import play.api.test._
  */
 class HomeControllerSpec extends WordSpec with GuiceOneAppPerTest with MustMatchers with BeforeAndAfterAll {
 
-  private val logger = org.slf4j.LoggerFactory.getLogger("embedded-cassandra")
+  private val logger = LoggerFactory.getLogger("embedded-cassandra")
 
-  // https://github.com/jsevellec/cassandra-unit/blob/master/cassandra-unit/src/main/java/org/cassandraunit/utils/EmbeddedCassandraServerHelper.java#L48
+  override protected def beforeAll(): Unit = {
+    EmbeddedCassandra.start(logger)
+  }
+
+  override protected def afterAll(): Unit = {
+    EmbeddedCassandra.cleanup(logger)
+  }
+
   "Application" should {
 
     "render the index page" in {
@@ -22,12 +30,4 @@ class HomeControllerSpec extends WordSpec with GuiceOneAppPerTest with MustMatch
     }
   }
 
-  override protected def beforeAll(): Unit = {
-    //System.setProperty("log4j.configuration", "conf/log4j.properties")
-    EmbeddedCassandra.start(logger)
-  }
-
-  override protected def afterAll(): Unit = {
-    EmbeddedCassandra.cleanup(logger)
-  }
 }

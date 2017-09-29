@@ -19,28 +19,29 @@ class AppDatabase @Inject()(env: play.api.Environment, override val connector: C
         .and(read_repair_chance eqs 0.2)
     }
 
-    def save(beer: Beer): Future[ResultSet] = {
-      beers.insert
-        .value(_.company, beer.company)
-        .value(_.style, beer.style)
-        .value(_.name, beer.name)
-        .future()
-    }
+    def initialize(): Future[List[ResultSet]] = {
+      val beerList = List(
+        Beer(company = "budhizer", style = "white", name = "Summer Bud"),
+        Beer(company = "budhizer", style = "dark", name = "Winter Bud"),
+        Beer(company = "budhizer", style = "wheat", name = "Spring Bud"),
+        Beer(company = "budhizer", style = "pumpkin", name = "Fall Bud")
+      )
 
-    def initialize(): Unit = {
-      Await.result(beers.autocreate(space).future(), 5000 millis)
-      beers.save(Beer(company = "budhizer", style = "white", name = "Summer Bud"))
-      beers.save(Beer(company = "budhizer", style = "dark", name = "Winter Bud"))
-      beers.save(Beer(company = "budhizer", style = "wheat", name = "Spring Bud"))
-      beers.save(Beer(company = "budhizer", style = "pumpkin", name = "Fall Bud"))
+      for {
+        init <- beers.autocreate(space).future()
+
+        // https://github.com/outworkers/phantom/blob/develop/docs/basics/tables.md#automatically-derived-store-method
+        records <- beers.storeRecords(beerList)
+      } yield records
     }
   }
 
-  // Create cassandra database schema and populate database in test mode only.
+  // Runs in constructor when the application is started.  Because this is @Singleton,
+  // it runs only once, only one instance of this class is created.
   env.mode match {
     case play.api.Mode.Test =>
       beers.initialize()
     case other@_ =>
-      // do nothing
+      Seq.empty
   }
 }
