@@ -10,8 +10,5 @@ class BeersRepository @Inject()(db: AppDatabase) {
     db.beers.getByStyle(style)
   }
 
-  def all: Future[Seq[Beer]] = {
-    db.beers.all()
-  }
-
+  def all: Future[Seq[Beer]] = db.beers.all()
 }

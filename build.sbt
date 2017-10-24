@@ -1,4 +1,9 @@
-lazy val root = (project in file(".")).enablePlugins(PlayScala).settings(
+lazy val Versions = new {
+  val phantom = "2.15.3"
+  val util = "0.38.0"
+}
+
+lazy val playPhantom = (project in file(".")).enablePlugins(PlayScala).settings(
   name := "play-phantom",
   version := "1.0.0-SNAPSHOT",
   resolvers ++= Seq(
@@ -7,7 +12,7 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala).settings(
     Resolver.jcenterRepo
   ),
   // Cut down on the embedded cassandra log messages
-  scalaVersion := "2.12.3",
+  scalaVersion := "2.12.4",
   libraryDependencies ++= Seq(
     guice,
     "net.codingwell" %% "scala-guice" % "4.1.0",

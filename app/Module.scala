@@ -16,10 +16,8 @@ class Module extends AbstractModule  with ScalaModule {
 class ConnectionProvider @Inject()(env: play.api.Environment) extends Provider[CassandraConnection] {
   lazy val get: CassandraConnection = {
     val builder = env.mode match {
-      case play.api.Mode.Test =>
-        ContactPoint.embedded
-      case other@_ =>
-        ContactPoint.local
+      case play.api.Mode.Test => ContactPoint.embedded
+      case _ => ContactPoint.local
     }
     builder.keySpace("outworkers")
   }
