@@ -7,6 +7,7 @@ lazy val playPhantom = (project in file(".")).enablePlugins(PlayScala).settings(
   name := "play-phantom",
   version := "1.0.0-SNAPSHOT",
   resolvers ++= Seq(
+    Resolver.bintrayRepo("outworkers", "oss-releases"),
     Resolver.typesafeRepo("releases"),
     Resolver.sonatypeRepo("releases"),
     Resolver.jcenterRepo
