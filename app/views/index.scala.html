@@ -1,7 +1,11 @@
-@(message: String)
+@(beers: Seq[Beer])
 
-@main("Welcome to Play") {
+@main("List of beers") {
 
-    @play20.welcome(message)
+<ul>
+    @beers.map { beer =>
+    <li>@beer.name by @beer.company is in the @beer.style</li>
+    }
+</ul>
 
 }
