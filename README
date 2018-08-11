@@ -1,4 +1,9 @@
-This is your new Play application
-=================================
+# Phantom Play Template
 
-This file will be packaged with your application, when using `activator dist`.
+Integrates Play with the [Phantom Cassandra API](https://github.com/outworkers/phantom).
+
+```
+git clone https://github.com/outworkers/phantom-activator-template.git
+cd phantom-activator-template
+sbt run
+```
